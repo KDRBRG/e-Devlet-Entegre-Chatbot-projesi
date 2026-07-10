@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>e-Devlet Kapısı - Akıllı Asistan Simülasyonu</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-bright": "#f6fafd",
+                        "secondary-container": "#92d4ff",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d6dbdd",
+                        "surface-container-low": "#f0f4f7",
+                        "primary-fixed-dim": "#aec7f9",
+                        "on-tertiary-fixed": "#410003",
+                        "inverse-surface": "#2c3134",
+                        "surface-variant": "#dfe3e6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#465f8b",
+                        "on-primary-container": "#88a1d1",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e5e9ec",
+                        "surface": "#f6fafd",
+                        "on-surface": "#171c1f",
+                        "tertiary-fixed": "#ffdad6",
+                        "tertiary": "#4d0004",
+                        "on-background": "#171c1f",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1c3761",
+                        "error": "#ba1a1a",
+                        "secondary": "#13658b",
+                        "on-surface-variant": "#44474f",
+                        "on-primary-fixed": "#001b3f",
+                        "on-tertiary-container": "#ff776d",
+                        "primary-fixed": "#d7e3ff",
+                        "tertiary-fixed-dim": "#ffb3ac",
+                        "on-secondary-fixed": "#001e2d",
+                        "background": "#f6fafd",
+                        "secondary-fixed-dim": "#8ccef9",
+                        "outline-variant": "#c4c6d0",
+                        "tertiary-container": "#76000a",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#c6e7ff",
+                        "surface-container-highest": "#dfe3e6",
+                        "on-primary-fixed-variant": "#2d4772",
+                        "primary": "#00214a",
+                        "inverse-on-surface": "#edf1f4",
+                        "on-secondary-container": "#005c81",
+                        "inverse-primary": "#aec7f9",
+                        "on-tertiary-fixed-variant": "#930010",
+                        "surface-container": "#eaeef1",
+                        "outline": "#747780",
+                        "on-secondary-fixed-variant": "#004c6b",
+                        "error-container": "#ffdad6"
+                    },
+                    fontFamily: {
+                        "headline": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(246, 250, 253, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #f6fafd;
+            color: #171c1f;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50 bg-[#f6fafd]/80 dark:bg-slate-950/80 backdrop-blur-md shadow-sm dark:shadow-none">
+        <div class="flex justify-between items-center w-full px-8 py-4 max-w-[1440px] mx-auto">
+            <div class="flex items-center gap-8">
+                <span class="text-xl font-bold tracking-tighter text-[#1C3761] dark:text-white">e-Devlet Kapısı</span>
+                <div class="hidden md:flex items-center gap-6">
+                    <a class="text-[#1C3761] font-bold border-b-2 border-[#1C3761] pb-1 font-public-sans tracking-tight text-sm" href="#">Hizmetler</a>
+                    <a class="text-slate-600 dark:text-slate-400 hover:text-[#1C3761] transition-colors duration-200 font-public-sans tracking-tight text-sm font-medium" href="#">Kurumlar</a>
+                    <a class="text-slate-600 dark:text-slate-400 hover:text-[#1C3761] transition-colors duration-200 font-public-sans tracking-tight text-sm font-medium" href="#">Belediyeler</a>
+                    <a class="text-slate-600 dark:text-slate-400 hover:text-[#1C3761] transition-colors duration-200 font-public-sans tracking-tight text-sm font-medium" href="#">Firmalar</a>
+                    <a class="text-slate-600 dark:text-slate-400 hover:text-[#1C3761] transition-colors duration-200 font-public-sans tracking-tight text-sm font-medium" href="#">Hızlı Çözüm</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden lg:block">
+                    <input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 w-64 text-sm focus:ring-2 focus:ring-primary-container" placeholder="Hizmet Ara..." type="text"/>
+                    <span class="material-symbols-outlined absolute left-3 top-2 text-on-surface-variant text-lg">search</span>
+                </div>
+                <button class="p-2 rounded-full hover:bg-[#f0f4f7] transition-colors duration-200">
+                    <span class="material-symbols-outlined text-[#1C3761]">notifications</span>
+                </button>
+                <button class="p-2 rounded-full hover:bg-[#f0f4f7] transition-colors duration-200">
+                    <span class="material-symbols-outlined text-[#1C3761]">help_outline</span>
+                </button>
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container/20">
+                    <img alt="Kullanıcı Profili" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA7EvjvD3Hr8V-vu2BZ4bJK0AOEyES5AIvCzi2EP8L6BxR45mR0dHUaxOV84hQIMxbFMTqTKjOF9DuAh4GhIhidIBYNKKAbh1KOVRhwY0iuUot2qMH3EzU-bpdEqTQ84Rv9hidqi9aBfKm_fxi4UuxKkqVctqk321w-zsvTBuUM9OaUj-9TmeGNAXtVthWP8iWLR7ZpdtIbhdDmKwhCw-IM3j1hzDfrZRZkgT84n3tr_IXNLQyl_mt4awJfH6likb8owOfDV7nPiYN"/>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SideNavBar (Dijital Elçi Sol Menü Tetikleyici) -->
+    <aside class="fixed right-0 top-20 h-[calc(100vh-80px)] w-64 bg-[#f0f4f7] dark:bg-slate-900 rounded-l-2xl shadow-2xl shadow-blue-900/10 flex flex-col p-4 gap-2 z-40 hidden xl:flex">
+        <div class="p-4 mb-4 text-center">
+            <div class="w-16 h-16 bg-white rounded-full mx-auto mb-3 flex items-center justify-center shadow-sm">
+                <span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+            </div>
+            <h3 class="font-semibold text-primary text-base">Dijital Elçi</h3>
+            <p class="text-xs text-slate-500">Size nasıl yardımcı olabilirim?</p>
+        </div>
+        <nav class="flex flex-col gap-1">
+            <a class="bg-white dark:bg-slate-800 text-[#1C3761] font-semibold rounded-xl px-4 py-3 flex items-center gap-3" href="#">
+                <span class="material-symbols-outlined">home</span>
+                <span class="font-public-sans text-sm">Ana Sayfa</span>
+            </a>
+            <a class="text-slate-500 dark:text-slate-400 px-4 py-3 flex items-center gap-3 hover:bg-white/50 transition-all rounded-xl" href="#">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="font-public-sans text-sm">Bildirimler</span>
+            </a>
+            <a class="text-slate-500 dark:text-slate-400 px-4 py-3 flex items-center gap-3 hover:bg-white/50 transition-all rounded-xl" href="#">
+                <span class="material-symbols-outlined">mail</span>
+                <span class="font-public-sans text-sm">Mesajlar</span>
+            </a>
+            <a class="text-slate-500 dark:text-slate-400 px-4 py-3 flex items-center gap-3 hover:bg-white/50 transition-all rounded-xl" href="#">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-public-sans text-sm">Belgelerim</span>
+            </a>
+            <a class="text-slate-500 dark:text-slate-400 px-4 py-3 flex items-center gap-3 hover:bg-white/50 transition-all rounded-xl" href="#">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-public-sans text-sm">Ayarlar</span>
+            </a>
+        </nav>
+        <button id="help-btn" class="mt-auto bg-gradient-to-r from-primary to-primary-container text-white py-3 px-6 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20">
+            Yardım Al
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="mt-24 mb-12 flex-grow max-w-[1440px] mx-auto px-8 w-full xl:pr-72">
+        <!-- Hero Section -->
+        <section class="relative rounded-3xl overflow-hidden mb-12 h-[320px] bg-primary">
+            <div class="absolute inset-0 opacity-40">
+                <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeBxqkiFRpWMEOt9LtW5mt8ChefgUrBz__ptf5mTSWrADuq8rPtweNwb_OlWHJd1zYRllQns5-f9agKG4p1Eo5nk2vu-FnKVa9aSVlJ1hpBpWFPl2Wnrin4GTP1s859Bzctk7WmaLwqzq_oESR2vqq8SbBs9kJhZSGgG-pu4Y2cMCcvQEcTIhXVSjJe3SjviKiTTeb1jE_MXP5_BEi918ENfnrUjmZuG0Yn5htVqoedSS-3fplDyOI0tEQFluXbFhWiiLi5I0K6yZD" alt="Hero Background"/>
+            </div>
+            <div class="relative z-10 h-full flex flex-col justify-center px-12 text-white">
+                <h1 class="text-5xl font-extrabold tracking-tight mb-4 max-w-2xl leading-tight">Türkiye'nin Dijital Yüzü e-Devlet Kapısı</h1>
+                <p class="text-lg opacity-90 max-w-xl mb-8">Tüm kamu hizmetlerine tek bir noktadan, güvenle ve kolayca erişin.</p>
+                <div class="flex max-w-2xl bg-white rounded-2xl p-2 shadow-2xl">
+                    <span class="material-symbols-outlined text-primary px-4 self-center">search</span>
+                    <input id="main-search" class="flex-grow border-none focus:ring-0 text-on-surface py-3 px-2 rounded-xl text-sm" placeholder="Hangi hizmeti arıyorsunuz? (Örn: Adli Sicil Kaydı)" type="text"/>
+                    <button id="main-search-btn" class="bg-primary hover:bg-primary-container transition-colors text-white px-8 py-3 rounded-xl font-bold text-sm">ARA</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bento Grid: Popular Services & Recent Apps -->
+        <div class="grid grid-cols-12 gap-8">
+            <!-- Popular Services (Bento Main) -->
+            <div class="col-span-12 lg:col-span-8">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-primary tracking-tight">Popüler Hizmetler</h2>
+                        <p class="text-on-surface-variant text-sm">Vatandaşlarımızın en çok ihtiyaç duyduğu işlemler</p>
+                    </div>
+                    <a class="text-primary font-semibold text-sm hover:underline" href="#">Tümünü Gör</a>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <!-- Service Cards -->
+                    <div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow group cursor-pointer quick-service" data-service="Adli Sicil Kaydı">
+                        <div class="w-12 h-12 bg-surface-container-low rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">gavel</span>
+                        </div>
+                        <h3 class="font-bold text-on-surface text-sm mb-1">Adli Sicil Kaydı</h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">Adalet Bakanlığı belgesi sorgulama</p>
+                    </div>
+                    <div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow group cursor-pointer quick-service" data-service="İkametgah Belgesi">
+                        <div class="w-12 h-12 bg-surface-container-low rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">home_pin</span>
+                        </div>
+                        <h3 class="font-bold text-on-surface text-sm mb-1">Yerleşim Yeri Belgesi</h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">İkametgah ilmuhaberi oluşturma</p>
+                    </div>
+                    <div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow group cursor-pointer quick-service" data-service="Mezuniyet Belgesi">
+                        <div class="w-12 h-12 bg-surface-container-low rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">school</span>
+                        </div>
+                        <h3 class="font-bold text-on-surface text-sm mb-1">Mezuniyet Belgesi</h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">YÖK üniversite diploması sorgula</p>
+                    </div>
+                    <div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow group cursor-pointer" data-service="SGK Tescil Kaydı">
+                        <div class="w-12 h-12 bg-surface-container-low rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">health_and_safety</span>
+                        </div>
+                        <h3 class="font-bold text-on-surface text-sm mb-1">SGK Tescil Kaydı</h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">4A/4B/4C hizmet dökümü dökümanı</p>
+                    </div>
+                    <div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+                        <div class="w-12 h-12 bg-surface-container-low rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">directions_car</span>
+                        </div>
+                        <h3 class="font-bold text-on-surface text-sm mb-1">Araçlarım</h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">Adınıza tescilli araçları listeleyin</p>
+                    </div>
+                    <div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow group cursor-pointer quick-service" data-service="Vergi Borcu">
+                        <div class="w-12 h-12 bg-surface-container-low rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">history_edu</span>
+                        </div>
+                        <h3 class="font-bold text-on-surface text-sm mb-1">Vergi Borcu</h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">GİB vergi borcu sorgulama</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Applications (Bento Side) -->
+            <div class="col-span-12 lg:col-span-4">
+                <div class="bg-surface-container-low rounded-3xl p-8 h-full">
+                    <h2 class="text-xl font-bold text-primary mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined">history</span> Son Başvurularım
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 border border border-outline-variant/5">
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-sm text-on-surface">Pasaport Yenileme</h4>
+                                <p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">NÜFUS MÜDÜRLÜĞÜ</p>
+                            </div>
+                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-lg">Tamamlandı</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 border border border-outline-variant/5">
+                            <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-sm text-on-surface">İş Göremezlik Ödeneği</h4>
+                                <p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">SGK</p>
+                            </div>
+                            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">İşlemde</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 border border border-outline-variant/5">
+                            <div class="w-2 h-2 rounded-full bg-orange-500"></div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-sm text-on-surface">Üniversite Kayıt</h4>
+                                <p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">YÖK</p>
+                            </div>
+                            <span class="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded-lg">Beklemede</span>
+                        </div>
+                        <button class="w-full py-4 mt-4 border-2 border-dashed border-outline-variant rounded-2xl text-on-surface-variant font-semibold text-sm hover:border-primary hover:text-primary transition-all">
+                            Yeni Başvuru Yap
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Grid -->
+        <section class="mt-16">
+            <h2 class="text-2xl font-bold text-primary mb-8 tracking-tight">Kategoriye Göre Hizmetler</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <div class="flex flex-col items-center gap-3 p-4 hover:bg-surface-container transition-colors rounded-2xl cursor-pointer">
+                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">policy</span>
+                    </div>
+                    <span class="text-sm font-semibold text-center">Adalet</span>
+                </div>
+                <div class="flex flex-col items-center gap-3 p-4 hover:bg-surface-container transition-colors rounded-2xl cursor-pointer">
+                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">business_center</span>
+                    </div>
+                    <span class="text-sm font-semibold text-center">Çalışma</span>
+                </div>
+                <div class="flex flex-col items-center gap-3 p-4 hover:bg-surface-container transition-colors rounded-2xl cursor-pointer">
+                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">school</span>
+                    </div>
+                    <span class="text-sm font-semibold text-center">Eğitim</span>
+                </div>
+                <div class="flex flex-col items-center gap-3 p-4 hover:bg-surface-container transition-colors rounded-2xl cursor-pointer">
+                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">medical_services</span>
+                    </div>
+                    <span class="text-sm font-semibold text-center">Sağlık</span>
+                </div>
+                <div class="flex flex-col items-center gap-3 p-4 hover:bg-surface-container transition-colors rounded-2xl cursor-pointer">
+                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">account_balance</span>
+                    </div>
+                    <span class="text-sm font-semibold text-center">Vergi</span>
+                </div>
+                <div class="flex flex-col items-center gap-3 p-4 hover:bg-surface-container transition-colors rounded-2xl cursor-pointer">
+                    <div class="w-14 h-14 bg-surface-container-high rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">traffic</span>
+                    </div>
+                    <span class="text-sm font-semibold text-center">Trafik</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full mt-auto border-t border-slate-200/50 dark:border-slate-800/50 bg-[#f6fafd] dark:bg-slate-950">
+        <div class="flex flex-col md:flex-row justify-between items-center w-full px-12 py-8 max-w-[1440px] mx-auto">
+            <div class="mb-6 md:mb-0">
+                <span class="font-public-sans text-xs uppercase tracking-widest font-semibold text-slate-500">© 2026 Türkiye Cumhuriyeti Cumhurbaşkanlığı Dijital Dönüşüm Ofisi</span>
+            </div>
+            <div class="flex gap-8">
+                <a class="font-public-sans text-xs uppercase tracking-widest font-semibold text-slate-500 hover:text-[#1C3761] dark:hover:text-blue-300 transition-all" href="#">Gizlilik ve Güvenlik</a>
+                <a class="font-public-sans text-xs uppercase tracking-widest font-semibold text-slate-500 hover:text-[#1C3761] dark:hover:text-blue-300 transition-all" href="#">Kullanım Koşulları</a>
+                <a class="font-public-sans text-xs uppercase tracking-widest font-semibold text-slate-500 hover:text-[#1C3761] dark:hover:text-blue-300 transition-all" href="#">Hakkımızda</a>
+                <a class="font-public-sans text-xs uppercase tracking-widest font-semibold text-slate-500 hover:text-[#1C3761] dark:hover:text-blue-300 transition-all" href="#">İletişim</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Chatbot Window & Toggle Container -->
+    <div class="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-4">
+        <!-- Chat Window -->
+        <div id="chat-window" class="w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden flex flex-col hidden transition-all duration-300">
+            <!-- Header -->
+            <div class="bg-primary p-4 flex flex-col gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-1">
+                            <h4 class="text-white font-bold text-sm leading-none">Dijital Elçi</h4>
+                        </div>
+                        <p class="text-white/70 text-[10px] mt-1">Çevrimiçi (Stitch Simülatörü)</p>
+                    </div>
+                    <button id="chat-close" class="text-white/80 hover:text-white transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <!-- Multi-language Support -->
+                <div class="flex gap-2 justify-center pt-1 border-t border-white/10">
+                    <button class="text-[10px] font-bold text-white bg-white/20 px-1.5 py-0.5 rounded transition-colors">TR</button>
+                    <button class="text-[10px] font-bold text-white/60 hover:text-white hover:bg-white/20 px-1.5 py-0.5 rounded transition-colors">EN</button>
+                    <button class="text-[10px] font-bold text-white/60 hover:text-white hover:bg-white/20 px-1.5 py-0.5 rounded transition-colors">DE</button>
+                </div>
+            </div>
+            <!-- Chat Content -->
+            <div id="chat-messages" class="p-4 h-64 overflow-y-auto bg-surface-container-lowest dark:bg-slate-950 flex flex-col gap-3">
+                <div class="bg-surface-container-low dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%]">
+                    <p class="text-xs text-on-surface dark:text-slate-300">Merhaba! Ben Dijital Elçi. Size nasıl yardımcı olabilirim?</p>
+                </div>
+                <div class="bg-surface-container-low dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%]">
+                    <p class="text-xs text-on-surface dark:text-slate-300">Google Stitch mimarisiyle entegre çalışıyorum. Bilgi almak istediğiniz hizmeti yazabilir veya aşağıdaki popüler kartlara tıklayabilirsiniz.</p>
+                </div>
+            </div>
+            <!-- Input Area -->
+            <div class="p-3 border-t border-outline-variant/10 bg-white dark:bg-slate-900">
+                <div class="flex items-center gap-2 bg-surface-container-low dark:bg-slate-800 rounded-xl px-3 py-2">
+                    <input id="chat-input" class="bg-transparent border-none focus:ring-0 text-xs flex-grow text-on-surface dark:text-white p-1" placeholder="Mesajınızı yazın... (örn: İkametgah)" type="text"/>
+                    <button id="chat-send" class="text-primary dark:text-blue-400 hover:scale-105 transition-transform">
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <button id="chat-toggle" class="w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all group relative">
+            <span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+            <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-slate-950"></span>
+        </button>
+    </div>
+
+    <!-- JavaScript - İnteraktif Simülasyon Altyapısı -->
+    <script>
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatWindow = document.getElementById('chat-window');
+        const chatClose = document.getElementById('chat-close');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Chat penceresini aç/kapa
+        chatToggle.addEventListener('click', () => {
+            chatWindow.classList.toggle('hidden');
+            chatInput.focus();
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWindow.classList.add('hidden');
+        });
+
+        // Mesaj Gönderme Fonksiyonu
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            // Kullanıcı mesajını ekle
+            appendMessage(text, true);
+            chatInput.value = '';
+
+            // Bot yanıt simülasyonu (Google Stitch İş Akışı mantığı)
+            simulateStitchWorkflow(text);
+        }
+
+        function appendMessage(text, isUser = false) {
+            const msgDiv = document.createElement('div');
+            if (isUser) {
+                msgDiv.className = "bg-primary text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] self-end text-xs shadow-sm";
+            } else {
+                msgDiv.className = "bg-surface-container-low dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-xs text-on-surface dark:text-slate-300 shadow-sm";
+            }
+            msgDiv.innerHTML = `<p>${text}</p>`;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Google Stitch Intent Routing Simülasyonu
+        function simulateStitchWorkflow(userInput) {
+            const query = userInput.toLowerCase();
+            
+            // Yükleniyor efekti
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = "text-[10px] text-slate-400 italic animate-pulse pl-2";
+            loadingDiv.innerText = "Stitch Node işliyor...";
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                loadingDiv.remove();
+                let response = "";
+
+                if (query.includes('ikametgah') || query.includes('yerleşim') || query.includes('yer')) {
+                    response = "🚀 **[Stitch Node: İkametgah Akışı]** Niyetiniz algılandı. Yerleşim Yeri Belgesi simülasyonu tetiklendi. Gemini API üzerinden kurumsal üslupla belgeniz mock veri olarak hazırlanıyor.";
+                } else if (query.includes('adli') || query.includes('sicil') || query.includes('gavel')) {
+                    response = "⚖️ **[Stitch Node: Adli Sicil Akışı]** Adalet Bakanlığı servis simülasyon düğümü aktif edildi. Temiz adli sicil kaydı dökümünüz başarıyla simüle ediliyor.";
+                } else if (query.includes('vergi') || query.includes('borç')) {
+                    response = "💰 **[Stitch Node: Vergi Borcu Akışı]** GİB vergi yapılandırma arayüzü simüle edildi. Yapay zeka asistanı borç yapılandırma adımları için sizi yönlendiriyor.";
+                } else {
+                    response = "🤖 **[Stitch Genel Yönlendirme]** Mesajınız Gemini API'ye gönderildi. e-Devlet protokollerine uygun cevap üretiliyor. Lütfen simülasyon için 'ikametgah', 'adli sicil' veya 'vergi' yazmayı deneyin.";
+                }
+
+                appendMessage(response, false);
+            }, 1000);
+        }
+
+        // Enter tuşu ile gönderme
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        chatSend.addEventListener('click', sendMessage);
+
+        // Popüler Hizmet Kartlarına Tıklayınca Chatbot'u Tetikleme
+        document.querySelectorAll('.quick-service').forEach(card => {
+            card.addEventListener('click', () => {
+                const serviceName = card.getAttribute('data-service');
+                chatWindow.classList.remove('hidden');
+                appendMessage(`${serviceName} hakkında bilgi alabilir miyim?`, true);
+                simulateStitchWorkflow(serviceName);
+            });
+        });
+    </script>
+</body>
+</html>
